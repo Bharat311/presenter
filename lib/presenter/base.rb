@@ -1,6 +1,6 @@
 module Presenter
   class BasePresenter
-    extend Forwardable
+    extend Presenter::Delegator
 
     def initialize(resource)
       @_presentable_resource = resource
@@ -11,10 +11,6 @@ module Presenter
         resource_klass(klass_name)
         setup_resource_klass
         define_resource_getter
-      end
-
-      def delegates(*args)
-        args.include?(:all) ? delegate_all : delegate_only(*args)
       end
 
       private
@@ -34,22 +30,6 @@ module Presenter
           class_eval <<-eos
             def #{resource_klass.name.demodulize.underscore}
               @_presentable_resource
-            end
-          eos
-        end
-
-        def delegate_only(*args)
-          args.each do |method|
-            class_eval <<-eos
-              def_delegator :@_presentable_resource, :#{method}
-            eos
-          end
-        end
-
-        def delegate_all
-          class_eval <<-eos
-            def method_missing(method_name, *args)
-              @_presentable_resource.send(method_name, *args)
             end
           eos
         end
