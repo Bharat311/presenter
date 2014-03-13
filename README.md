@@ -54,8 +54,8 @@ Now, we have:
   user.presenter.first_name   #=> Bharat
   user.presenter.last_name    #=> Gupta
   user.presenter.full_name    #=> Gupta, Bharat
-  user.presenter.age          #=> Undefined method 'age' for <UserPresenter#>
-  user.presenter.user         #=> returns the user object <User#>
+  user.presenter.age          #=> Undefined method 'age' for #<UserPresenter:>
+  user.presenter.user         #=> returns the user object #<User:>
 ```
 
 or,
@@ -67,8 +67,8 @@ or,
   user_presenter.first_name   #=> Bharat
   user_presenter.last_name    #=> Gupta
   user_presenter.full_name    #=> Gupta, Bharat
-  user_presenter.age          #=> Undefined method 'age' for <UserPresenter#>
-  user_presenter.user         #=> returns the user object <User#>
+  user_presenter.age          #=> Undefined method 'age' for #<UserPresenter:>
+  user_presenter.user         #=> returns the user object #<User:>
 ```
 
 ## Working With Rails
@@ -105,11 +105,28 @@ Also, when using with Rails, Including the 'Presenter::ViewsHelper' module in yo
   end
 ```
 
+## Multiple Presenters
+
+In cases of defining multiple presenters for a same class, we can specify the presenter we would like to use by passing 'as' along with the presenter name.
+
+
+say User class has two presenters - AdminPresenter and UserPresenter (:default)
+
+```
+  user = User.new(first_name: 'Bharat', last_name: 'Gupta', age: 24)
+
+  user.presenter               #=> #<UserPresenter:>
+  user.presenter(as: :admin)   #=> #<AdminPresenter:>
+```
+
+**Note** : In case of multiple presenters per class, the presenter that gets loaded last becomes the default presenter.
+
 ##Todo
-* Support for multiple Presenters per class.
+
 * Support for collection objects.
 * Support for STI.
 * Generators for scaffold, etc.
+* Rspec Coverage.
 
 ## Contributing
 
