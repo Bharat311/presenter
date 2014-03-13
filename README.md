@@ -109,7 +109,6 @@ Also, when using with Rails, Including the 'Presenter::ViewsHelper' module in yo
 * Support for multiple Presenters per class.
 * Support for collection objects.
 * Support for STI.
-* View helpers in presenters.
 * Generators for scaffold, etc.
 
 ## Contributing
