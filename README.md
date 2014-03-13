@@ -21,35 +21,62 @@ Or install it yourself as:
 If you have a class named User.
 
 ```
-class User
-  attr_accessor :first_name, :last_name, :age
-end
+  class User
+    attr_accessor :first_name, :last_name, :age
+
+    def initialize(options = {})
+      @first_name = options[:first_name)
+      @last_name  = options[:last_name]
+      @age        = options[:age]
+    end
+  end
 ```
 
 Then you can create a presenter for that class:
 
 ```
-class UserPresenter < Presenter::BasePresenter
-  presents :user
+  class UserPresenter < Presenter::BasePresenter
+    presents :user
 
-  delegates :first_name, :last_name # or short :all.
+    delegates :first_name, :last_name # or short :all.
 
-  def full_name
-    "#{last_name}, #{first_name}"
+    def full_name
+      "#{last_name}, #{first_name}"
+    end
   end
-end
 ```
 
 Now, we have:
 
 ```
-user = User.new(first_name: 'Bharat', last_name: 'Gupta', age: 24)
+  user = User.new(first_name: 'Bharat', last_name: 'Gupta', age: 24)
 
-user.presenter.first_name   #=> Bharat
-user.presenter.last_name    #=> Gupta
-user.presenter.full_name    #=> Gupta, Bharat
-user.presenter.age          #=> Undefined method 'age' for <UserPresenter#>
+  user.presenter.first_name   #=> Bharat
+  user.presenter.last_name    #=> Gupta
+  user.presenter.full_name    #=> Gupta, Bharat
+  user.presenter.age          #=> Undefined method 'age' for <UserPresenter#>
 ```
+
+or,
+
+```
+  user = User.new(first_name: 'Bharat', last_name: 'Gupta', age: 24)
+  user_presenter = UserPresenter.new(user)
+
+  user_presenter.first_name   #=> Bharat
+  user_presenter.last_name    #=> Gupta
+  user_presenter.full_name    #=> Gupta, Bharat
+  user_presenter.age          #=> Undefined method 'age' for <UserPresenter#>
+```
+
+When working with Rails, simply put all the presenters in **app/presenters** and inherit them from the **Presenter::BasePresenter** and you are all setup to use them in your app.
+
+##Todo
+* Support for multiple Presenters per class.
+* Support for collection objects.
+* Support for STI.
+* View helpers in presenters.
+* Generators for scaffold, etc.
 
 ## Contributing
 
