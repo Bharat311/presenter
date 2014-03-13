@@ -8,26 +8,35 @@ module Presenter
 
     class << self
       def presents(klass_name)
-        klass = presentable_resource_class(klass_name)
-        klass.send(:include, Presenter::Presentable)
-        klass.class_variable_set('@@_presenter_class', name)
-      end
-
-      def presentable_resource_class(klass_name)
-        klass_name.to_s.classify.constantize
+        resource_klass(klass_name)
+        setup_resource_klass
+        define_resource_getter
       end
 
       def delegates(*args)
-        if args.include?(:all)
-          delegate_all
-        else
-          delegate_only *args
-        end
+        args.include?(:all) ? delegate_all : delegate_only(*args)
       end
 
       private
 
+        def resource_klass(klass_name = nil)
+          @_presentable_resource_klass ||= klass_name.to_s.classify.constantize
+        end
+
+        def setup_resource_klass
+          resource_klass.send(:include, Presenter::Presentable)
+          resource_klass.class_variable_set('@@_presenter_class', name)
+        end
+
         # Can we avoid using class_eval here?
+
+        def define_resource_getter
+          class_eval <<-eos
+            def #{resource_klass.name.demodulize.underscore}
+              @_presentable_resource
+            end
+          eos
+        end
 
         def delegate_only(*args)
           args.each do |method|

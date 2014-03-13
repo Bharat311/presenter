@@ -55,6 +55,7 @@ Now, we have:
   user.presenter.last_name    #=> Gupta
   user.presenter.full_name    #=> Gupta, Bharat
   user.presenter.age          #=> Undefined method 'age' for <UserPresenter#>
+  user.presenter.user         #=> returns the user object <User#>
 ```
 
 or,
@@ -67,9 +68,42 @@ or,
   user_presenter.last_name    #=> Gupta
   user_presenter.full_name    #=> Gupta, Bharat
   user_presenter.age          #=> Undefined method 'age' for <UserPresenter#>
+  user_presenter.user         #=> returns the user object <User#>
 ```
 
-When working with Rails, simply put all the presenters in **app/presenters** and inherit them from the **Presenter::BasePresenter** and you are all setup to use them in your app.
+## Working With Rails
+
+When working with Rails, simply put all your model presenters in **app/presenters** and inherit them from the **Presenter::BasePresenter** class. Next, you can use them in your views as above.
+
+Also, when using with Rails, Including the 'Presenter::ViewsHelper' module in your presenter class provides you with:
+
+* `helper` method (aliased as 'h')
+* `translate` method (aliased as 't')
+* `router` method (aliased as 'r')
+
+```
+  class UserPresenter < Presenter::BasePresenter
+    include Presenter::ViewsHelper
+
+    presents :user
+
+    delegates :first_name, :last_name # or short :all.
+
+    def full_name
+      "#{t('salutation')} #{last_name}, #{first_name}"         # Using I18n Translation
+    end
+
+    def avatar
+      h.image_tag(avatar.url)                                  # Using View Helper
+    end
+
+    def brief_bio
+      h.truncate(biography, length: 50)
+      h.link_to t('Read More..'), r.user_path(user)
+    end
+
+  end
+```
 
 ##Todo
 * Support for multiple Presenters per class.
