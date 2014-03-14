@@ -2,6 +2,10 @@
 
 A simple and minimalist implementation for Presenter pattern.
 
+[![GitHub version](https://badge.fury.io/gh/Bharat311%2Fpresenter.png)](http://badge.fury.io/gh/Bharat311%2Fpresenter)
+
+[![Code Climate](https://codeclimate.com/github/Bharat311/presenter.png)](https://codeclimate.com/github/Bharat311/presenter)
+
 ## Installation
 
 Add this line to your application's Gemfile:
