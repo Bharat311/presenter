@@ -5,7 +5,10 @@ require 'presenter/base'
 
 require 'presenter/version'
 
-require 'presenter/rails/view_helpers' if defined? Rails
+if defined? Rails
+  require 'presenter/rails/view_helpers'
+  require 'presenter/rails/railtie'
+end
 
 module Presenter
 end
