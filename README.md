@@ -83,7 +83,8 @@ Also, when using with Rails, Including the 'Presenter::ViewsHelper' module in yo
 
 * `helper` method (aliased as 'h')
 * `translate` method (aliased as 't')
-* `router` method (aliased as 'r')
+* `localize` method (aliased as 'l')
+* `routes` method (aliased as 'r')
 
 ```
   class UserPresenter < Presenter::BasePresenter
